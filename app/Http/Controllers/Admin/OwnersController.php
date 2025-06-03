@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Owner;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StorePostRequest;
+
+
 
 class OwnersController extends Controller
 {
@@ -50,9 +54,15 @@ class OwnersController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        //
+        Owner::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.owners.index')->with('message', 'オーナー登録を実施しました。');
     }
 
     /**
