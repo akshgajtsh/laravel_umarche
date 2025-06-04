@@ -9,14 +9,16 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StorePostRequest;
-
-
+use App\Services\Admin\StoreService;
 
 class OwnersController extends Controller
 {
-    public function __construct()
+    protected StoreService $storeService;
+
+    public function __construct(StoreService $storeService)
     {
         $this->middleware('auth:admin');
+        $this->storeService = $storeService;
     }
     /**
      * Display a listing of the resource.
@@ -56,11 +58,12 @@ class OwnersController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        Owner::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        // Owner::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => Hash::make($request->password),
+        // ]);
+        $this->storeService->Ownerstore($request);
 
         return redirect()->route('admin.owners.index')->with('message', 'オーナー登録を実施しました。');
     }
