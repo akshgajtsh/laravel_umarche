@@ -4,11 +4,11 @@ namespace App\Interfaces\Admin;
 
 use App\Http\Requests\StorePostRequest;
 use App\Models\Owner;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface StoreRepositoryInterface
 {
-    public function OwnerIndex(): Collection;
+    public function OwnerIndex(): LengthAwarePaginator;
 
     public function OwnerStore(StorePostRequest $request): Owner;
 

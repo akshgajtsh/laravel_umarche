@@ -4,7 +4,7 @@ namespace App\Services\Admin;
 
 use App\Interfaces\Admin\StoreRepositoryInterface;
 use App\Http\Requests\StorePostRequest;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class StoreService
 {
@@ -15,7 +15,7 @@ class StoreService
         $this->storeRepositoryInterface = $storeRepositoryInterface;
     }
 
-    public function OwnerIndex(): Collection
+    public function OwnerIndex(): LengthAwarePaginator
     {
         return $this->storeRepositoryInterface->OwnerIndex();
     }
@@ -25,8 +25,8 @@ class StoreService
         $this->storeRepositoryInterface->OwnerStore($request);
     }
 
-    public function OwnerDestroy($id){
+    public function OwnerDestroy($id)
+    {
         $this->storeRepositoryInterface->OwnerDestroy($id);
     }
-
 }
