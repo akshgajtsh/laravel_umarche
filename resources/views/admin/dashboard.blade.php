@@ -1,5 +1,4 @@
 <x-app-layout>
-    <div x-data x-init="console.log('Alpine動いてます')"></div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}

@@ -18,9 +18,9 @@
 
 <body class="font-sans antialiased">
     <div>
-        @if(auth('admin')->user())
+        @if(request()->is('admin*'))
         @include('layouts.admin-navigation')
-        @elseif(auth('owners')->user())
+        @elseif(request()->is('owner*'))
         @include('layouts.owner-navigation')
         @elseif(auth('users')->user())
         @include('layouts.user-navigation')
