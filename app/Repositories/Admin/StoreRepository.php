@@ -5,6 +5,7 @@ namespace App\Repositories\Admin;
 use App\Interfaces\Admin\StoreRepositoryInterface;
 use App\Models\Owner;
 use App\Http\Requests\StorePostRequest;
+use App\Models\Shop;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,14 +19,25 @@ class StoreRepository implements StoreRepositoryInterface
     //オーナー登録 
     public function OwnerStore(StorePostRequest $request): Owner
     {
-        return Owner::create([
+        $owner = Owner::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        Shop::create([
+            'owner_id' => $owner->id,
+            'name' => '店名',
+            'information' => '情報',
+            'filename' => '',
+            'is_selling' => true
+        ]);
+
+        return $owner;
     }
 
-    public function OwnerDestroy($id){
+    public function OwnerDestroy($id)
+    {
         Owner::findOrFail($id)->delete(); //ソフトデリート 
     }
 }

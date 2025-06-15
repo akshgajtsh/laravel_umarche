@@ -42,7 +42,7 @@ class OwnersController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $this->storeService->Ownerstore($request);
+        $this->storeService->OwnerStore($request);
         return redirect()->route('admin.owners.index')->with(['message' => 'オーナー登録を実施しました。', 'status' => 'info']);
     }
 
