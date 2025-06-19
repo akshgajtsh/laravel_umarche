@@ -59,7 +59,7 @@ class OwnersController extends Controller
      */
     public function edit(string $id)
     {
-        $owner = Owner::findOrFail($id);
+        $owner = $this->storeService->OwnerEdit($id);
         return view('admin.owners.edit', compact('owner'));
     }
 
@@ -68,11 +68,7 @@ class OwnersController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $owner = Owner::findOrFail($id);
-        $owner->name = $request->name;
-        $owner->email = $request->email;
-        $owner->password = Hash::make($request->password);
-        $owner->save();
+        $this->storeService->OwnerUpdate($request, $id);
         return redirect()->route('admin.owners.index')->with(['message' => 'オーナー情報をしま更新しました。', 'status' => 'info']);
     }
 

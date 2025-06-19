@@ -36,6 +36,16 @@ class StoreRepository implements StoreRepositoryInterface
         return $owner;
     }
 
+    public function OwnerEdit(string $id)
+    {
+        return Owner::findOrFail($id);
+    }
+
+    public function OwnerUpdate(string $id, array $data)
+    {
+        return Owner::findOrFail($id)->update($data);
+    }
+
     public function OwnerDestroy($id)
     {
         Owner::findOrFail($id)->delete(); //ソフトデリート 

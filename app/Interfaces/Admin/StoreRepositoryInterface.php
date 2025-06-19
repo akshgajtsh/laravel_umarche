@@ -12,5 +12,9 @@ interface StoreRepositoryInterface
 
     public function OwnerStore(StorePostRequest $request): Owner;
 
+    public function OwnerEdit(string $id);
+
+    public function OwnerUpdate(string $id, array $data);
+
     public function OwnerDestroy($id);
 }
