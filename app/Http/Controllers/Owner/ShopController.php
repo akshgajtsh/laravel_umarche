@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UploadImageRequest;
 use App\Models\Shop;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
@@ -42,7 +42,7 @@ class ShopController extends Controller
         return view('owner.shops.edit', compact('shop'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UploadImageRequest $request, $id)
     {
         $imageFile = $request->image; //一時保存
         if (!is_null($imageFile) && $imageFile->isValid()) {
@@ -55,6 +55,7 @@ class ShopController extends Controller
             $resizedImage = $image->resize(1920, 1080)->encode();
             Storage::put("public/shops/{$fileNameToStore}", (string) $resizedImage);
         }
+        // dd($imageFile, $resizedImage);
         return redirect()->route('owner.shops.index');
     }
 }
