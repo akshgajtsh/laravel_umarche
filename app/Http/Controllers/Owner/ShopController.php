@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use App\Services\Owner\ImageService;
 
 
 class ShopController extends Controller
@@ -46,16 +47,8 @@ class ShopController extends Controller
     {
         $imageFile = $request->image; //一時保存
         if (!is_null($imageFile) && $imageFile->isValid()) {
-            // Storage::putFile('public/shops', $imageFile);
-            $fileName = uniqid(rand() . '_');
-            $extension = $imageFile->extension();
-            $fileNameToStore = $fileName . ' . ' . $extension;
-            $manager = new ImageManager(new Driver());
-            $image = $manager->read($imageFile);
-            $resizedImage = $image->resize(1920, 1080)->encode();
-            Storage::put("public/shops/{$fileNameToStore}", (string) $resizedImage);
+            $fileNameToStore = ImageService::upload($imageFile, 'shops');
         }
-        // dd($imageFile, $resizedImage);
         return redirect()->route('owner.shops.index');
     }
 }
