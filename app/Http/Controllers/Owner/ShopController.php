@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Http\Requests\UploadImageRequest;
 use App\Models\Shop;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,7 @@ class ShopController extends Controller
     public function edit($id)
     {
         $shop = Shop::findOrFail($id);
+        // dd($shop);
         return view('owner.shops.edit', compact('shop'));
     }
 

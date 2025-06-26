@@ -12,7 +12,7 @@ class ImageService
     {
         $fileName = uniqid(rand() . '_');
         $extension = $imageFile->extension();
-        $fileNameToStore = $fileName . ' . ' . $extension;
+        $fileNameToStore = $fileName . '.' . $extension;
         $manager = new ImageManager(new Driver());
         $image = $manager->read($imageFile);
         $resizedImage = $image->resize(1920, 1080)->encode();
