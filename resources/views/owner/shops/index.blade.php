@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="text-x1"> {{ $shop->name }}</div>
                             </div>
-                            <x-shop-thumbnail />
+                            <x-shop-thumbnail :filename="$shop->filename" />
                         </a>
                     </div>
                     @endforeach
