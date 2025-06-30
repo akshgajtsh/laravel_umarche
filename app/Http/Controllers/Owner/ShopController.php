@@ -18,6 +18,7 @@ class ShopController extends Controller
     public function __construct()
     {
         $this->middleware('auth:owners');
+        
         $this->middleware(function ($request, $next) {
             $id = $request->route()->parameter('shop'); //shopのid取得
             if (!is_null($id)) { // null判定
@@ -41,7 +42,6 @@ class ShopController extends Controller
     public function edit($id)
     {
         $shop = Shop::findOrFail($id);
-        // dd($shop);
         return view('owner.shops.edit', compact('shop'));
     }
 
