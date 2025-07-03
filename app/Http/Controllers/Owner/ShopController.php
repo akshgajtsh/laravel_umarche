@@ -66,6 +66,6 @@ class ShopController extends Controller
             $data['filename'] = $fileNameToStore;
         }
         $shop->update($data);
-        return redirect()->route('owner.shops.index')->with(['message' => 'オーナー登録を実施しました。', 'status' => 'info']);
+        return redirect()->route('owner.shops.index')->with(['message' => '店舗情報を更新しました。', 'status' => 'info']);
     }
 }
