@@ -53,8 +53,8 @@ class ImageContoroller extends Controller
     public function store(UploadImageRequest $request)
     {
         $imageFiles = $request->file('files');
-        if(!is_null($imageFiles)){
-            foreach($imageFiles as $imageFile){
+        if (!is_null($imageFiles)) {
+            foreach ($imageFiles as $imageFile) {
                 $fileNameToStore = ImageService::upload($imageFile, 'products');
                 Image::create([
                     'owner_id' => Auth::id(),
@@ -66,19 +66,12 @@ class ImageContoroller extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $image = Image::findOrFail($id);
+        return view('owner.images.edit', compact('image'));
     }
 
     /**
@@ -86,7 +79,13 @@ class ImageContoroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'string|max:50',
+        ]);
+        $image = Image::findOrFail($id);
+        $image->title = $request->title;
+        $image->update();
+        return redirect()->route('owner.images.index')->with(['message' => '画像情報を更新しました。', 'status' => 'info']);
     }
 
     /**
