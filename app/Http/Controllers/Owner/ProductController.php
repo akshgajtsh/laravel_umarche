@@ -10,6 +10,8 @@ use App\Models\Image;
 use App\Models\Shop;
 use App\Models\Owner;
 use App\Models\PrimaryCategory;
+use App\Models\Stock;
+use Illuminate\Support\Facades\DB;
 
 
 class ProductController extends Controller
@@ -46,7 +48,8 @@ class ProductController extends Controller
     public function create()
     {
         $shops = Shop::where('owner_id', Auth::id())
-            ->select('id', 'name');
+            ->select('id', 'name')
+            ->get();
 
         $images = Image::where('owner_id', Auth::id())
             ->select('id', 'title', 'filename')
@@ -64,7 +67,49 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'information' => 'required|string|max:1000',
+            'price' => 'required|integer',
+            'sort_order' => 'nullable|integer',
+            'quantity' => 'required|integer',
+            'shop_id' => 'required|exists:shops,id',
+            'category' => 'required|exists:secondary_categories,id',
+            'image1' => 'nullable|exists:images,id',
+            'image2' => 'nullable|exists:images,id',
+            'image3' => 'nullable|exists:images,id',
+            'image4' => 'nullable|exists:images,id',
+            'is_selling' => 'required',
+        ]);
+
+        try {
+            DB::beginTransaction();
+            $product = Product::create([
+                'name' => $request->name,
+                'information' => $request->information,
+                'price' => $request->price,
+                'sort_prder' => $request->sort_prder,
+                'shop_id' => $request->shop_id,
+                'secondary_category_id' => $request->category,
+                'image1' => $request->image1,
+                'image2' => $request->image2,
+                'image3' => $request->image3,
+                'image4' => $request->image4,
+                'is_selling' => $request->is_selling,
+            ]);
+
+            Stock::create([
+                'product_id' => $product->id,
+                'type' => 1,
+                'quantity' => $request->quantity,
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+        }
+
+        return redirect()->route('owner.products.index')->with(['message' => '商品登録を実施しました。', 'status' => 'info']);
     }
 
     /**
