@@ -182,6 +182,9 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Product::findOrFail($id)->delete();
+
+        return redirect()->route('owner.images.index')
+            ->with(['message' => '画像を削除しました。', 'status' => 'alert']);
     }
 }
